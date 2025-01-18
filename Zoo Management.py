@@ -128,3 +128,43 @@ vet.heal_animal(snake)
 
 # Вывод информации о животных
 zoo.show_animals()
+
+# Дополнительная функциональность для сохранения и загрузки данных
+import json
+
+# Функция для сохранения зоопарка в файл JSON
+def save_zoo(zoo):
+    with open(f"{zoo.name}.json", "w") as file:
+        data = {
+            "name": zoo.name,
+            "animals": [{"name": animal.name, "age": animal.age, "type": animal.__class__.__name__} for animal in zoo.animals]
+        }
+        json.dump(data, file)
+
+# Функция для загрузки зоопарка из файла JSON
+def load_zoo(filename):
+    with open(filename, "r") as file:
+        data = json.load(file)
+        zoo = Zoo(data["name"])
+        for animal_data in data["animals"]:
+            if animal_data["type"] == "Bird":
+                animal = Bird(animal_data["name"], animal_data["age"], wing_span=0.5)  # Примерное значение размаха крыльев
+            elif animal_data["type"] == "Mammal":
+                animal = Mammal(animal_data["name"], animal_data["age"], diet="трава")  # Примерное значение диеты
+            elif animal_data["type"] == "Reptile":
+                animal = Reptile(animal_data["name"], animal_data["age"], habitat="болото")  # Примерное значение среды обитания
+            zoo.add_animal(animal)
+        return zoo
+
+# Тестирование сохранения и загрузки
+save_zoo(zoo)
+zoo_loaded = load_zoo("Городской зоопарк.json")
+
+# Пример использования функции save_zoo:
+# Сохраняем текущее состояние зоопарка
+save_zoo(zoo)
+
+# Загружаем зоопарк из файла
+zoo_loaded = load_zoo("Городской зоопарк.json")
+print("Загруженные данные о зоопарке:")
+zoo_loaded.show_animals()
