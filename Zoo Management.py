@@ -55,3 +55,11 @@ class Reptile(Animal):
     def describe_habitat(self):
         # Метод, описывающий среду обитания
         print(f"{self.name} обитает в {self.habitat}.")
+
+# 3. Полиморфизм
+# Функция, демонстрирующая полиморфизм, вызывая метод make_sound для каждого животного
+
+
+def animal_sound(animals):
+    for animal in animals:
+        animal.make_sound()
